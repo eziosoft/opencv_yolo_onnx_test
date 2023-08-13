@@ -16,7 +16,7 @@ cap = cv2.VideoCapture(url1)
 # onnxModel_path = "models/yolov7/yolov7-tiny.onnx"
 # yolo7_onnx = YOLOv7_onnx(onnxModel_path)
 
-onnxModel_path = "models/yolov7/best4.onnx"
+onnxModel_path = "models/yolov7/best.onnx"
 yolo7_onnx = YOLOv7_onnx(onnxModel_path, classes=["boat", "patio", "people"])
 
 while cap.isOpened():
