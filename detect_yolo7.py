@@ -7,7 +7,7 @@ window_name = 'frame'
 cap = cv2.VideoCapture(url1)
 
 # Load a model
-# onnxModel_path = "models/yolov7-tiny.onnx"
+# onnxModel_path = "models/yolov7/yolov7-tiny.onnx"
 # yolo7_onnx = YOLOv7_onnx(onnxModel_path)
 
 onnxModel_path = "models/yolov7/best4.onnx"
@@ -17,7 +17,6 @@ while cap.isOpened():
     success, frame = cap.read()
 
     if success:
-
         detections, ratio, dwdh = yolo7_onnx.detect(frame)
         filter_iou = yolo7_onnx.non_max_suppression(detections, 0.1)
         annotated_frame = yolo7_onnx.drawDetections(filter_iou, frame, ratio, dwdh, filter_classs=None)
