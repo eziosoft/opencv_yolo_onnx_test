@@ -22,8 +22,8 @@ class YOLOv7_onnx:
                    'cell phone', 'microwave', 'oven', 'toaster', 'sink', 'refrigerator', 'book', 'clock', 'vase',
                    'scissors', 'teddy bear', 'hair drier', 'toothbrush']
 
-    def __init__(self, model_path, cuda=False, classes=class_names):
-        self.providers = ['CUDAExecutionProvider', 'CPUExecutionProvider'] if cuda else ['CPUExecutionProvider']
+    def __init__(self, model_path, classes=class_names):
+        self.providers = ['CUDAExecutionProvider', 'CPUExecutionProvider']
         self.session = ort.InferenceSession(model_path, providers=self.providers)
         self.names = classes
         self.colors = {name: [random.randint(0, 255) for _ in range(3)] for i, name in enumerate(classes)}
@@ -78,9 +78,6 @@ class YOLOv7_onnx:
         outputs = self.session.run(outname, inp)[0]
 
         return outputs, ratio, dwdh
-
-
-
 
     def drawDetections(self, detections, image, ratio, dwdh, filter_classs=None):
         out = image.copy()
@@ -148,4 +145,3 @@ class YOLOv7_onnx:
 
         selected_detections = [detections[idx] for idx in selected_indices]
         return selected_detections
-
