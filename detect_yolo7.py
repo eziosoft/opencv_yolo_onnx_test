@@ -24,7 +24,7 @@ while cap.isOpened():
 
     if success:
         fps.update()
-        print(f'FPS = %.2f' % fps.getFPS(), end='\r')
+
 
         detections, ratio, dwdh = yolo7_onnx.detect(frame)
         filter_iou = yolo7_onnx.non_max_suppression(detections, 0.1)
@@ -32,9 +32,10 @@ while cap.isOpened():
 
         i = 0
         for a in detections:
-            if int(a[5]) == 3:
+            if int(a[5]) == 4:
                 i += 1
 
+        print(f'FPS = %.2f, people = %d' % (fps.getFPS(), i ), end='\r')
         annotated_frame = cv2.putText(annotated_frame, "Number of people: " + str(i), (50, 50),
                                       cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
 
