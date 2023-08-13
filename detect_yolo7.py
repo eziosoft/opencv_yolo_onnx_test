@@ -27,12 +27,12 @@ while cap.isOpened():
 
 
         detections, ratio, dwdh = yolo7_onnx.detect(frame)
-        filter_iou = yolo7_onnx.non_max_suppression(detections, 0.1)
+        filter_iou = yolo7_onnx.non_max_suppression(detections, 0.9)
         annotated_frame = yolo7_onnx.drawDetections(filter_iou, frame, ratio, dwdh, filter_classs=None)
 
         i = 0
-        for a in detections:
-            if int(a[5]) == 4:
+        for a in filter_iou:
+            if int(a[5]) == 2:
                 i += 1
 
         print(f'FPS = %.2f, people = %d' % (fps.getFPS(), i ), end='\r')
