@@ -1,8 +1,14 @@
+import os
+
 import cv2
 
 from urls import *
+from utils.FPSCounter import FPSCounter
 from yolo_onnx.YOLOv7 import YOLOv7_onnx
 
+fps = FPSCounter()
+
+os.environ['DISPLAY'] = ':0.0'
 window_name = 'frame'
 cap = cv2.VideoCapture(url1)
 
@@ -17,13 +23,15 @@ while cap.isOpened():
     success, frame = cap.read()
 
     if success:
+        fps.update()
+        print(f'FPS = %.2f' % fps.getFPS(), end='\r')
+
         detections, ratio, dwdh = yolo7_onnx.detect(frame)
         filter_iou = yolo7_onnx.non_max_suppression(detections, 0.1)
         annotated_frame = yolo7_onnx.drawDetections(filter_iou, frame, ratio, dwdh, filter_classs=None)
 
         i = 0
         for a in detections:
-            print(a)
             if int(a[5]) == 3:
                 i += 1
 
