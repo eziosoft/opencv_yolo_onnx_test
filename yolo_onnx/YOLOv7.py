@@ -56,7 +56,7 @@ class YOLOv7_onnx:
         im = cv2.copyMakeBorder(im, top, bottom, left, right, cv2.BORDER_CONSTANT, value=color)  # add border
         return im, r, (dw, dh)
 
-    def detect(self, img):
+    def detect(self, img, threshold=0.5):
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 
         image = img.copy()
@@ -76,6 +76,8 @@ class YOLOv7_onnx:
 
         # ONNX inference
         outputs = self.session.run(outname, inp)[0]
+
+        outputs = outputs[outputs[:, 6] > threshold]
 
         return outputs, ratio, dwdh
 
@@ -99,49 +101,12 @@ class YOLOv7_onnx:
             cv2.putText(out, name, (box[0], box[1] - 2), cv2.FONT_HERSHEY_SIMPLEX, 0.75, [225, 255, 255], thickness=2)
         return out
 
-    def calculate_iou(self, box1, box2):
-        x1, y1, w1, h1 = box1
-        x2, y2, w2, h2 = box2
+    def nms(self, detections, iou_threshold=0.5):
+        scores = [detection[6] for detection in detections]
+        boxes = [detection[1:5] for detection in detections]
 
-        intersection_x1 = max(x1, x2)
-        intersection_y1 = max(y1, y2)
-        intersection_x2 = min(x1 + w1, x2 + w2)
-        intersection_y2 = min(y1 + h1, y2 + h2)
+        indices = cv2.dnn.NMSBoxes(boxes, scores, score_threshold=0.0, nms_threshold=iou_threshold)
 
-        intersection_width = max(0, intersection_x2 - intersection_x1)
-        intersection_height = max(0, intersection_y2 - intersection_y1)
+        filtered_detections = [detections[i] for i in indices]
 
-        intersection_area = intersection_width * intersection_height
-
-        area_box1 = w1 * h1
-        area_box2 = w2 * h2
-
-        iou = intersection_area / (area_box1 + area_box2 - intersection_area)
-        return iou
-
-    def non_max_suppression(self, detections, threshold):
-        boxes = [d[1:5] for d in detections]
-        scores = [d[6] for d in detections]
-
-        sorted_indices = np.argsort(scores)[::-1]
-        selected_indices = []
-
-        while len(sorted_indices) > 0:
-            best_index = sorted_indices[0]
-            selected_indices.append(best_index)
-
-            remaining_indices = sorted_indices[1:]
-            to_delete = []
-
-            for idx in remaining_indices:
-                iou = self.calculate_iou(boxes[best_index], boxes[idx])
-                if iou >= threshold:
-                    to_delete.append(idx)
-
-            # Ensure indices to delete are within valid range
-            to_delete = [idx for idx in to_delete if idx < len(sorted_indices)]
-
-            sorted_indices = np.delete(sorted_indices, [0] + to_delete)
-
-        selected_detections = [detections[idx] for idx in selected_indices]
-        return selected_detections
+        return filtered_detections
