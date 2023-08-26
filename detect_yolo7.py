@@ -67,41 +67,5 @@ while cap.isOpened():
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
-# while cap.isOpened():
-#     success, frame = cap.read()
-#     height, width, _ = frame.shape
-#
-#     left_half = frame[:, :width // 2, :]
-#     right_half = frame[:, width // 2:, :]
-# cv2.imshow("left", left_half)
-# cv2.imshow("right", right_half)
-
-# if success:
-#     fps.update()
-#
-#     detections1, ratio1, dwdh1 = yolo7_onnx.detect(left_half, 0.1)
-#     detections2, ratio2, dwdh2 = yolo7_onnx.detect(right_half, 0.1)
-#     # filter_iou = yolo7_onnx.nms(detections, 0.60)
-#     annotated_frame1 = yolo7_onnx.drawDetections(detections1, left_half, ratio1, dwdh1, filter_classs=None)
-#     annotated_frame2 = yolo7_onnx.drawDetections(detections2, right_half, ratio2, dwdh2, filter_classs=None)
-#
-#     # i = 0
-#     # for a in detections:
-#     #     if int(a[5]) == 3:
-#     #         i += 1
-#
-#     # print(f'FPS = %.2f, people = %d' % (fps.getFPS(), i ), end='\r')
-#     # print(f"filter_iou: {len(detections)} detections: {len(detections)}\r")
-#     # annotated_frame = cv2.putText(annotated_frame, "Number of people: " + str(i), (50, 50),
-#     #                               cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
-#
-#     stitched_frame = np.concatenate((annotated_frame1, annotated_frame2), axis=1)
-#     cv2.imshow("stitched", stitched_frame)
-#     # cv2.imshow(window_name, annotated_frame)
-#     if cv2.waitKey(1) & 0xFF == ord('q'):
-#         break
-# else:
-#     break
-
 cap.release()
 cv2.destroyAllWindows()
