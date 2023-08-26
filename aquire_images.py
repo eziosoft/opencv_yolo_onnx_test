@@ -4,7 +4,7 @@ from roboflow import Roboflow
 import cv2
 
 from secret import roboflow_api_key
-from urls import url1
+from urls import url1, url2
 
 # Initialize the Roboflow object with your API key
 rf = Roboflow(api_key=roboflow_api_key)
@@ -16,7 +16,7 @@ print(rf.workspace())
 project = rf.workspace("test-workspace-a6u9w").project("boats-gpvac")
 
 window_name = 'frame'
-cap = cv2.VideoCapture(url1)
+cap = cv2.VideoCapture(url2)
 
 while cap.isOpened():
     success, frame = cap.read()

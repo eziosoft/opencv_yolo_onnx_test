@@ -5,8 +5,8 @@ import numpy as np
 import onnxruntime as ort
 
 
-# python3 export.py --weights yolov7-tiny.pt --grid --end2end --simplify \
-#         --topk-all 100 --iou-thres 0.65 --conf-thres 0.35 --img-size 640 640 --max-wh 640
+# python3 export.py --grid --end2end --simplify  --topk-all 100  --img-size 640 640 --max-wh 640 --iou-thres 0.2 --conf-thres 0.1  --weights best4.pt
+# cp best4.onnx ~/PycharmProjects/opencv_yolo_test/models/yolov7/best.onnx
 
 class YOLOv7_onnx:
     class_names = ['person', 'bicycle', 'car', 'motorcycle', 'airplane', 'bus', 'train', 'truck', 'boat',
