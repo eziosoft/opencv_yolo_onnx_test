@@ -23,8 +23,8 @@ class YOLOv7_onnx:
                    'scissors', 'teddy bear', 'hair drier', 'toothbrush']
 
     def __init__(self, model_path, classes=class_names):
-        self.session = ort.InferenceSession(model_path, providers=['AzureExecutionProvider','CUDAExecutionProvider',
-                                                                   'CPUExecutionProvider'])
+        self.session = ort.InferenceSession(model_path, providers=['AzureExecutionProvider'
+                                                                   ])
         self.names = classes
         self.colors = {name: [random.randint(0, 255) for _ in range(3)] for i, name in enumerate(classes)}
 
