@@ -9,8 +9,8 @@ from yolo_onnx.YOLOv7 import YOLOv7_onnx
 
 fps = FPSCounter()
 
-TILE = True
-score_threshold = 0.1
+TILE = False
+score_threshold = 0.2
 
 os.environ['DISPLAY'] = ':0.0'
 window_name = 'frame'
