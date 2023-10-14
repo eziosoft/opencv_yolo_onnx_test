@@ -46,6 +46,10 @@ def generate_frames():
             detections, ratio, dwdh = yolo7_onnx.detect(frame, score_threshold)
             annotated_frame = yolo7_onnx.drawDetections(detections, frame, ratio, dwdh, filter_classs=None)
 
+            people = count_people(detections)
+            annotated_frame = cv2.putText(annotated_frame, "Number of people: " + str(people), (50, 50),
+                                          cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
+
         _, buffer = cv2.imencode('.jpg', annotated_frame)
         frame_bytes = buffer.tobytes()
         yield (b'--frame\r\n'
@@ -57,6 +61,13 @@ def annotate_square(square):
     annotated_square = yolo7_onnx.drawDetections(detections, square, ratio, dwdh, filter_classs=None)
     return annotated_square
 
+
+def count_people(detections):
+    i = 0
+    for a in detections:
+        if int(a[5]) == 3:
+            i += 1
+    return i
 
 @app.route('/')
 def index():
