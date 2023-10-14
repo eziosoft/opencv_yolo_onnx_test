@@ -22,7 +22,7 @@ def generate_frames():
         if success:
             fps.update()
 
-            detections, ratio, dwdh = yolo7_onnx.detect(frame, 0.2)
+            detections, ratio, dwdh = yolo7_onnx.detect(frame, 0.3)
             filter_iou = yolo7_onnx.nms(detections, 0.90)
 
             print(f"filter_iou: {len(filter_iou)} detections: {len(detections)}\r")
@@ -30,7 +30,7 @@ def generate_frames():
 
             i = 0
             for a in filter_iou:
-                if int(a[5]) == 2:
+                if int(a[5]) == 3:
                     i += 1
 
             # print(f'FPS = %.2f, people = %d' % (fps.getFPS(), i ), end='\r')
