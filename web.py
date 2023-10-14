@@ -12,7 +12,8 @@ fps = FPSCounter()
 os.environ['DISPLAY'] = ':0.0'
 cap = cv2.VideoCapture(url1)
 onnxModel_path = "models/yolov7/best.onnx"
-yolo7_onnx = YOLOv7_onnx(onnxModel_path, classes=["boat", "patio", "people"])
+yolo7_onnx = YOLOv7_onnx(onnxModel_path, classes=["boat", "crowd", "patio", "person"])
+
 
 def generate_frames():
     while cap.isOpened():
@@ -44,13 +45,16 @@ def generate_frames():
         else:
             break
 
+
 @app.route('/')
 def index():
     return render_template('index.html')
 
+
 @app.route('/video_feed')
 def video_feed():
     return Response(generate_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
+
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', debug=True)
