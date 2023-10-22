@@ -12,7 +12,7 @@ fps = FPSCounter()
 TILE = False
 score_threshold = 0.2
 # os.environ['DISPLAY'] = ':0.0'
-cap = cv2.VideoCapture(url2)
+cap = cv2.VideoCapture(url1)
 onnxModel_path = "models/yolov7/best.onnx"
 yolo7_onnx = YOLOv7_onnx(onnxModel_path, classes=["boat", "crowd", "patio", "person"])
 
