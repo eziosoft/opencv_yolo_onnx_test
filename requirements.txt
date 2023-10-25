@@ -1,0 +1,7 @@
+Flask==3.0.0
+numpy==1.26.1
+onnxruntime==1.16.1
+opencv_python==4.8.1.78
+opencv_python_headless==4.8.1.78
+roboflow==1.1.7
+secret==0.8
